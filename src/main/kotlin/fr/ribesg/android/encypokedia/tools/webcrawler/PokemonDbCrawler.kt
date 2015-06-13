@@ -36,7 +36,7 @@ object PokemonDbCrawler {
                 val url = URL_POKEDEX_BASE + lineColumns[1].child(0).attr("href")
 
                 // Parse pokemon page
-                print("\r\t#$num          ")
+                print("\r\t#$num")
                 res.add(num.toString(), crawlPokemon(url))
 
                 // Don't overload server

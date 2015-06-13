@@ -1,6 +1,7 @@
 package fr.ribesg.android.encypokedia.tools
 
 import com.github.salomonbrys.kotson.obj
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fr.ribesg.android.encypokedia.tools.webcrawler.PokebipCrawler
 import fr.ribesg.android.encypokedia.tools.webcrawler.PokemonDbCrawler
@@ -29,7 +30,7 @@ fun main(args: Array<String>) {
     res["pokemons"].obj.entrySet().forEach {
         val num = it.key
         val pkmnData = it.value.obj
-        print("\r\t#$num          ")
+        print("\r\t#$num")
         pkmnData["names"].obj.add("fr", pkmnFr[num].obj["name"])
         pkmnData["pokedex"].obj.add("fr", pkmnFr[num].obj["pokedex"])
     }
@@ -37,20 +38,14 @@ fun main(args: Array<String>) {
 
     // Produce output
     println("Creating output files...")
-    val outputFolder = Paths.get("out")
-    if (Files.isDirectory(outputFolder)) {
-        for (f in Files.newDirectoryStream(outputFolder)) {
-            Files.delete(f)
-        }
-    } else {
-        Files.createDirectories(outputFolder)
-    }
+    val out = Paths.get("data.json")
     val gson = GsonBuilder().setPrettyPrinting().create()
-    res["pokemons"].obj.entrySet().forEach { entry ->
-        print("\r\t#${entry.key}          ")
-        Files.newBufferedWriter(outputFolder.resolve(entry.key + ".json"), StandardCharsets.UTF_8).use { out ->
-            out.write(gson.toJson(entry.value))
-        }
+    Files.newBufferedWriter(out, StandardCharsets.UTF_8).use { out ->
+        out.write(gson.toJson(res))
     }
-    println("\r\tDone.")
+    val outMin = Paths.get("data.min.json")
+    Files.newBufferedWriter(outMin, StandardCharsets.UTF_8).use { out ->
+        out.write(Gson().toJson(res))
+    }
+    println("\tDone.")
 }
