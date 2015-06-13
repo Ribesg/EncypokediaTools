@@ -32,7 +32,11 @@ object PokebipCrawler {
             val url = URL_POKEDEX_BASE + lineColumns[2].child(0).child(0).child(0).attr("href")
 
             // Parse pokemon page
+            print("\r\t#$num          ")
             res.add(num, crawlPokemon(url))
+
+            // Don't overload server
+            Thread.sleep(100)
         }
 
         return res
@@ -59,7 +63,7 @@ object PokebipCrawler {
 
         return jsonObject(
             "name" to frName,
-            "desc" to jsonObject(
+            "pokedex" to jsonObject(
                 "X" to xDesc,
                 "Y" to yDesc
             )
