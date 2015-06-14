@@ -38,12 +38,12 @@ fun main(args: Array<String>) {
 
     // Produce output
     println("Creating output files...")
-    val out = Paths.get("data.json")
+    val out = Paths.get("debugOutput", "data.json")
     val gson = GsonBuilder().setPrettyPrinting().create()
     Files.newBufferedWriter(out, StandardCharsets.UTF_8).use { out ->
         out.write(gson.toJson(res))
     }
-    val outMin = Paths.get("data.min.json")
+    val outMin = Paths.get("assets", "data", "pkmn", "data.json")
     Files.newBufferedWriter(outMin, StandardCharsets.UTF_8).use { out ->
         out.write(Gson().toJson(res))
     }
